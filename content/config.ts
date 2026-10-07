@@ -11,7 +11,7 @@ export const config = {
   whatsapp: "+584129632254", //                WhatsApp de contacto (+58 412 963 2254)
   instagram: "@cerberustech39", //             PENDIENTE
   linkedin: "", //                             PENDIENTE (URL completa del perfil de empresa)
-  formEndpoint: "", //                         PENDIENTE (p. ej. https://formspree.io/f/xxxxxxx)
+  formEndpoint: "https://formspree.io/f/xrpepplg", // Formspree (formulario activo)
   rif: "", //                                  No mostrar hasta que la empresa esté formalizada
 } as const;
 

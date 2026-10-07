@@ -102,7 +102,14 @@ export function ContactForm({
         const res = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ ...payload, servicio, _subject: `Nueva solicitud web: ${servicio}` }),
+          body: JSON.stringify({
+            ...payload,
+            name: values.nombre,
+            email: values.correo,
+            _replyto: values.correo,
+            servicio,
+            _subject: `Nueva solicitud web (${servicio}): ${values.nombre}`,
+          }),
         });
         if (!res.ok) throw new Error(String(res.status));
       }

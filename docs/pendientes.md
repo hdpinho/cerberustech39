@@ -9,7 +9,7 @@
 | `whatsapp` | `+584129632254` | **Configurado** | Botón en Contacto, en el pie, flotante y JSON-LD |
 | `instagram` | `@cerberustech39` | **Confirmar** que la cuenta existe | Se muestra en el pie |
 | `linkedin` | vacío | **Pendiente** | Icono oculto |
-| `formEndpoint` | vacío | **Pendiente**: crear un formulario en Formspree (gratis) | En producción se muestra el aviso «formulario disponible muy pronto» con el correo |
+| `formEndpoint` | `https://formspree.io/f/xrpepplg` | **Configurado** | Formulario activo con validación Zod y anti-spam |
 | `rif` | vacío | Hasta formalizar la empresa | No se muestra |
 
 ## Otros pendientes
