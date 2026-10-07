@@ -39,9 +39,15 @@ npm start            # sirve ./out en http://localhost:3000 con Brotli/gzip y la
 
 ### Vercel (proyecto `pjjulio/cerberustech39`, ya vinculado)
 
+Repositorio: **https://github.com/hdpinho/cerberustech39** (privado), conectado a Vercel:
+
+- **push a `main`** → despliegue en producción (https://cerberustech39.vercel.app);
+- **push a otra rama o pull request** → despliegue preview con su propia URL.
+
 ```bash
-npx vercel deploy          # preview (protegido con el inicio de sesión de Vercel, no indexable)
-npx vercel deploy --prod   # producción
+git add -A && git commit -m "Describe el cambio" && git push   # publica
+npx vercel deploy          # preview manual, sin Git (protegido con el inicio de sesión de Vercel)
+npx vercel deploy --prod   # producción manual, sin Git
 ```
 
 - **`vercel.json` fuerza el modo estático** (`framework: null`, `buildCommand: npm run build`, `outputDirectory: out`). Con el adaptador de Next.js, Vercel copia la salida antes del `postbuild` y se perderían la CSP y la carga diferida de scripts.
