@@ -1,13 +1,15 @@
 import { Logo } from "@/components/brand/Logo";
-import { InstagramIcon, LinkedinIcon } from "@/components/ui/Icon";
+import { InstagramIcon, LinkedinIcon, WhatsappIcon } from "@/components/ui/Icon";
 import { Container } from "@/components/ui/primitives";
 import { Year } from "@/components/ui/Year";
-import { contact, instagramUrl } from "@/content/config";
+import { contact, instagramUrl, whatsappUrl } from "@/content/config";
 import type { SiteContent } from "@/content/types";
 
 export function Footer({ c, homePrefix = "" }: { c: SiteContent; homePrefix?: string }) {
   const ig = instagramUrl();
+  const wa = whatsappUrl(c.contact.whatsappMessage);
   const socials = [
+    wa ? { href: wa, label: `WhatsApp ${contact.whatsappFormatted || ""}`, Icon: WhatsappIcon } : null,
     ig ? { href: ig, label: `Instagram @${contact.instagramHandle}`, Icon: InstagramIcon } : null,
     contact.linkedinUrl ? { href: contact.linkedinUrl, label: "LinkedIn", Icon: LinkedinIcon } : null,
   ].filter((s): s is NonNullable<typeof s> => s !== null);

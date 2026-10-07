@@ -8,7 +8,7 @@
 export const config = {
   dominio: "cerberustech39.com", //            PENDIENTE confirmar
   correo: "pjjulio@gmail.com", //              Provisional, hasta tener el buzón del dominio
-  whatsapp: "+580000000000", //                PENDIENTE (formato internacional, sin espacios)
+  whatsapp: "+584129632254", //                WhatsApp de contacto (+58 412 963 2254)
   instagram: "@cerberustech39", //             PENDIENTE
   linkedin: "", //                             PENDIENTE (URL completa del perfil de empresa)
   formEndpoint: "", //                         PENDIENTE (p. ej. https://formspree.io/f/xxxxxxx)
@@ -42,8 +42,16 @@ function whatsappDigits(): string {
   return /[1-9]/.test(local) ? digits : "";
 }
 
+function formatWhatsapp(digits: string): string {
+  if (digits.length === 12 && digits.startsWith("58")) {
+    return `+58 ${digits.slice(2, 5)} ${digits.slice(5, 8)} ${digits.slice(8)}`;
+  }
+  return digits ? `+${digits}` : "";
+}
+
 export const contact = {
   whatsappDigits: whatsappDigits(),
+  whatsappFormatted: formatWhatsapp(whatsappDigits()),
   correo: config.correo.trim(),
   instagramHandle: config.instagram.replace(/^@/, "").trim(),
   linkedinUrl: config.linkedin.trim(),
@@ -51,9 +59,10 @@ export const contact = {
   rif: config.rif.trim(),
 };
 
-export function whatsappUrl(message: string): string | null {
+export function whatsappUrl(message?: string): string | null {
   if (!contact.whatsappDigits) return null;
-  return `https://wa.me/${contact.whatsappDigits}?text=${encodeURIComponent(message)}`;
+  const query = message ? `?text=${encodeURIComponent(message)}` : "";
+  return `https://wa.me/${contact.whatsappDigits}${query}`;
 }
 
 export function instagramUrl(): string | null {

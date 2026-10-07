@@ -6,7 +6,7 @@
 |---|---|---|---|
 | `dominio` | `cerberustech39.com` | **Confirmar** | En Vercel la URL sale de `VERCEL_PROJECT_PRODUCTION_URL` (hoy `cerberustech39.vercel.app`); este valor solo se usa en compilaciones locales |
 | `correo` | `pjjulio@gmail.com` | **Provisional**, hasta tener el buzón del dominio | Se muestra en Contacto, Privacidad y el JSON-LD |
-| `whatsapp` | `+580000000000` | **Pendiente** (relleno) | Botón de WhatsApp **oculto** |
+| `whatsapp` | `+584129632254` | **Configurado** | Botón en Contacto, en el pie, flotante y JSON-LD |
 | `instagram` | `@cerberustech39` | **Confirmar** que la cuenta existe | Se muestra en el pie |
 | `linkedin` | vacío | **Pendiente** | Icono oculto |
 | `formEndpoint` | vacío | **Pendiente**: crear un formulario en Formspree (gratis) | En producción se muestra el aviso «formulario disponible muy pronto» con el correo |

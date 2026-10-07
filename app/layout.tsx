@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Chakra_Petch, Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@/components/layout/Analytics";
 import { CookieNotice } from "@/components/layout/CookieNotice";
+import { WhatsAppFloating } from "@/components/ui/WhatsAppFloating";
 import { siteUrl } from "@/content/config";
 import { getContent, htmlLang, defaultLocale } from "@/content";
 import "./globals.css";
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {c.nav.skip}
         </a>
         {children}
+        <WhatsAppFloating message={c.contact.whatsappMessage} />
         <Analytics />
         {process.env.NEXT_PUBLIC_ANALYTICS_PROVIDER ? <CookieNotice /> : null}
       </body>

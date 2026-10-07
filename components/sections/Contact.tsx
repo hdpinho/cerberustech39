@@ -46,7 +46,25 @@ export function Contact({ data, services }: { data: SiteContent["contact"]; serv
                   </div>
                 </li>
               ) : null}
-              <li data-reveal style={{ "--i": 1 } as React.CSSProperties} className="flex gap-4">
+              {contact.whatsappFormatted && wa ? (
+                <li data-reveal style={{ "--i": 1 } as React.CSSProperties} className="flex gap-4">
+                  <WhatsappIcon className="mt-0.5 h-5 w-5 shrink-0 text-cyan" aria-hidden="true" />
+                  <div>
+                    <p className="mono-label text-white/60">whatsapp</p>
+                    <p className="mt-1">
+                      <a
+                        href={wa}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white underline-offset-4 hover:underline"
+                      >
+                        {contact.whatsappFormatted}
+                      </a>
+                    </p>
+                  </div>
+                </li>
+              ) : null}
+              <li data-reveal style={{ "--i": 2 } as React.CSSProperties} className="flex gap-4">
                 <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-cyan" aria-hidden="true" />
                 <div>
                   <p className="mono-label text-white/60">{data.locationLabel.toLowerCase()}</p>
@@ -56,7 +74,7 @@ export function Contact({ data, services }: { data: SiteContent["contact"]; serv
               </li>
             </ul>
 
-            <div data-reveal style={{ "--i": 2 } as React.CSSProperties} className="marco-hud mt-10 hidden lg:block">
+            <div data-reveal style={{ "--i": 3 } as React.CSSProperties} className="marco-hud mt-10 hidden lg:block">
               <Imagen
                 nombre="contacto-movil"
                 alt={data.imagenAlt}
