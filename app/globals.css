@@ -1,0 +1,620 @@
+@import "tailwindcss";
+
+/* ───────────────────────── Tokens de marca ───────────────────────── */
+@theme {
+  --color-navy: #071a5f;
+  --color-deep: #040c33;
+  --color-tech: #1a7ab3;
+  --color-cyan: #a2d9f9;
+  --color-surface: #f4f7fb;
+  --color-ink: #111111;
+  --color-gold: #d4af37;
+  --color-line: #d9e1ec;
+
+  --font-display: var(--font-chakra), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* Curvas (Emil Kowalski): fuertes, nunca las de serie */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --breakpoint-xs: 26rem;
+}
+
+:root {
+  --header-h: 4.25rem;
+  color-scheme: light;
+}
+
+/* Registradas para poder transicionar colores del bisel (hereda: los
+   pseudo-elementos ::before/::after leen el valor de su elemento). */
+@property --bevel-border {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --bevel-bg {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+/* Hover solo con puntero fino: en táctil el hover queda "pegado". */
+@media (hover: hover) and (pointer: fine) {
+  .hover-tech:hover {
+    --bevel-bg: var(--color-tech);
+    --bevel-border: var(--color-tech);
+  }
+  .hover-white:hover {
+    --bevel-bg: #fff;
+    --bevel-border: #fff;
+  }
+  .hover-border-navy:hover {
+    --bevel-border: var(--color-navy);
+  }
+  .hover-border-cyan:hover {
+    --bevel-border: var(--color-cyan);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 0.5rem);
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+
+  :focus-visible {
+    outline: 2px solid var(--color-tech);
+    outline-offset: 3px;
+  }
+  .on-dark :focus-visible {
+    outline-color: var(--color-cyan);
+  }
+}
+
+/* Secciones bajo el hero: el navegador no las maqueta ni pinta hasta que
+   se acercan a la pantalla (gran ahorro de layout en móvil). `auto`
+   recuerda el tamaño real una vez renderizadas. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1100px;
+}
+
+/* ───────────────────────── Superficies ───────────────────────── */
+@utility bg-dark {
+  background-color: var(--color-deep);
+  background-image:
+    radial-gradient(120% 90% at 18% 0%, rgb(7 26 95 / 0.95) 0%, rgb(4 12 51 / 0) 62%),
+    radial-gradient(80% 70% at 100% 100%, rgb(26 122 179 / 0.18) 0%, rgb(4 12 51 / 0) 60%);
+  color: #fff;
+}
+
+/*
+ * Esquina biselada (sello del brochure).
+ * El clip-path vive en pseudo-elementos para que el foco (outline)
+ * del elemento real nunca quede recortado.
+ */
+@utility bevel {
+  position: relative;
+  isolation: isolate;
+  --bevel: 18px;
+  --bevel-bg: #fff;
+  --bevel-border: var(--color-line);
+  transition:
+    --bevel-border 200ms ease,
+    --bevel-bg 200ms ease;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    clip-path: polygon(0 0, calc(100% - var(--bevel)) 0, 100% var(--bevel), 100% 100%, 0 100%);
+  }
+  &::before {
+    inset: 0;
+    z-index: -2;
+    background: var(--bevel-border);
+  }
+  &::after {
+    inset: 1px;
+    z-index: -1;
+    background: var(--bevel-bg);
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--bevel) + 0.42px) 0,
+      100% calc(var(--bevel) - 0.42px),
+      100% 100%,
+      0 100%
+    );
+  }
+}
+
+@utility bevel-sm {
+  --bevel: 10px;
+}
+
+/* Botones: feedback táctil inmediato */
+@utility press {
+  transition-property: transform, color, --bevel-border, --bevel-bg;
+  transition-duration: 160ms;
+  transition-timing-function: var(--ease-out);
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Tarjeta pulsable completa (botón con ::after que la cubre) */
+.card-lift {
+  cursor: pointer;
+  transition:
+    transform 200ms var(--ease-out),
+    --bevel-border 200ms ease;
+}
+.card-lift:has(button:active) {
+  transform: scale(0.985);
+}
+.card-lift:has(button:focus-visible) {
+  outline: 2px solid var(--color-tech);
+  outline-offset: 4px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-lift:hover {
+    transform: translateY(-3px);
+    --bevel-border: var(--color-tech);
+  }
+}
+
+/* Diálogo de servicio: modal centrado (origen center), entra 240 ms, sale 160 ms */
+.service-dialog[open] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 240ms var(--ease-out),
+    transform 240ms var(--ease-out);
+  @starting-style {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+}
+.service-dialog[open]::backdrop {
+  opacity: 1;
+  transition: opacity 240ms var(--ease-out);
+  @starting-style {
+    opacity: 0;
+  }
+}
+.service-dialog[data-closing] {
+  opacity: 0;
+  transform: scale(0.98);
+  transition-duration: 160ms;
+}
+.service-dialog[data-closing]::backdrop {
+  opacity: 0;
+  transition-duration: 160ms;
+}
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+/* FAQ: el contenido entra suave al abrir; al cerrar es inmediato */
+@keyframes faq-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+details[open] > .faq-body {
+  animation: faq-in 200ms var(--ease-out);
+}
+
+/* Etiqueta técnica `// algo` */
+@utility mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+}
+
+/* ───────────────────────── Estética futurista ───────────────────────── */
+
+/* Retícula holográfica que se desvanece desde arriba (secciones oscuras) */
+.fondo-reticula {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgb(162 217 249 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(162 217 249 / 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+}
+
+/* Titular holográfico: degradado cian → blanco recortado al texto */
+.texto-holo {
+  background: linear-gradient(100deg, #a2d9f9 0%, #ffffff 48%, #a2d9f9 78%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@media (forced-colors: active) {
+  .texto-holo {
+    color: CanvasText;
+    background: none;
+  }
+}
+
+/* Esquinas tipo HUD alrededor de imágenes y escenas */
+.marco-hud {
+  position: relative;
+  --c: rgb(162 217 249 / 0.85);
+  --l: 18px;
+}
+.marco-hud::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--c), var(--c)) top left / var(--l) 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) top left / 1.5px var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / var(--l) 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) top right / 1.5px var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / var(--l) 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom left / 1.5px var(--l) no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / var(--l) 1.5px no-repeat,
+    linear-gradient(var(--c), var(--c)) bottom right / 1.5px var(--l) no-repeat;
+}
+.marco-hud--tech {
+  --c: rgb(26 122 179 / 0.9);
+}
+
+/* Recorte biselado para imágenes (misma esquina que las tarjetas) */
+.recorte-bisel {
+  --bevel: 18px;
+  clip-path: polygon(0 0, calc(100% - var(--bevel)) 0, 100% var(--bevel), 100% 100%, 0 100%);
+}
+
+/* Imagen: miniatura difuminada de fondo mientras carga la real */
+.imagen {
+  background-size: cover;
+  background-position: center;
+  background-color: var(--color-deep);
+}
+@media (hover: hover) and (pointer: fine) {
+  .zoom-suave img {
+    transition: transform 600ms var(--ease-out);
+  }
+  .zoom-suave:hover img,
+  .card-lift:hover .zoom-suave img {
+    transform: scale(1.04);
+  }
+}
+
+/* Brillo del botón principal sobre oscuro (sigue la silueta biselada) */
+.brillo-cian {
+  filter: drop-shadow(0 0 16px rgb(162 217 249 / 0.32));
+}
+
+/* Respaldo del globo (CSS puro): esfera de puntos con volumen y plataforma */
+.globo-respaldo__esfera {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 52%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #0d2f86 0%, #071a5f 45%, #040c33 100%);
+  box-shadow:
+    0 0 70px 6px rgb(26 122 179 / 0.4),
+    inset 0 0 28px 2px rgb(162 217 249 / 0.45);
+  overflow: hidden;
+}
+.globo-respaldo__puntos {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgb(162 217 249 / 0.7) 0.9px, transparent 1.3px) 0 0 / 8px 8px;
+  /* Más denso en el centro y desvanecido hacia el borde: sugiere curvatura */
+  mask-image: radial-gradient(circle at 42% 40%, #000 0%, rgb(0 0 0 / 0.55) 45%, transparent 72%);
+}
+.globo-respaldo__plataforma {
+  position: absolute;
+  left: 50%;
+  top: 83%;
+  width: 92%;
+  aspect-ratio: 4.2;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, rgb(26 122 179 / 0.45), transparent 70%),
+    repeating-radial-gradient(closest-side, transparent 0 13%, rgb(162 217 249 / 0.22) 13.4% 14%);
+  mask-image: radial-gradient(closest-side, #000 60%, transparent 100%);
+}
+
+/* ───────────────────────── Escenas 3D ───────────────────────── */
+.escena-3d {
+  position: relative;
+  isolation: isolate;
+}
+.escena-3d__host,
+.escena-3d__respaldo {
+  position: absolute;
+  inset: 0;
+}
+/* Aparece con un fundido + desenfoque corto: une el respaldo y la escena en una sola transición */
+.escena-3d__host {
+  opacity: 0;
+  filter: blur(10px);
+  transition:
+    opacity 700ms var(--ease-out),
+    filter 700ms var(--ease-out);
+}
+.escena-3d[data-lista] .escena-3d__host {
+  opacity: 1;
+  filter: none;
+}
+.escena-3d__respaldo {
+  transition: opacity 500ms var(--ease-out);
+}
+.escena-3d[data-lista] .escena-3d__respaldo {
+  opacity: 0;
+}
+.lienzo-3d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.lienzo-3d[data-arrastrando] {
+  cursor: grabbing;
+}
+.capa-etiquetas-3d {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.capa-etiquetas-3d[data-oculta] {
+  display: none;
+}
+.rotulo-3d {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: -9px 0 0 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  padding: 0 5px;
+  color: rgb(162 217 249 / 0.95);
+  white-space: nowrap;
+  background: rgb(4 12 51 / 0.62);
+  text-shadow: 0 0 8px rgb(4 12 51 / 0.9);
+  will-change: transform;
+}
+.rotulo-3d--sede {
+  padding: 0 7px;
+  color: var(--color-deep);
+  background: var(--color-cyan);
+  font-weight: 500;
+  text-shadow: none;
+}
+.rotulo-3d--codigo {
+  margin: -9px 0 0 0;
+  translate: -50% 0;
+  padding: 0 6px;
+  background: rgb(4 12 51 / 0.75);
+  border: 1px solid rgb(162 217 249 / 0.3);
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+.rotulo-3d--codigo[data-activo] {
+  background: var(--color-cyan);
+  color: var(--color-deep);
+}
+.tip-3d {
+  position: absolute;
+  z-index: 2; /* por encima de los rótulos de los nodos */
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: 240px;
+  padding: 12px 14px;
+  background: rgb(4 12 51 / 0.94);
+  border: 1px solid rgb(162 217 249 / 0.35);
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.tip-3d[data-visible] {
+  opacity: 1;
+}
+.tip-3d__titulo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-cyan);
+}
+.tip-3d__cuerpo {
+  margin-top: 4px;
+  color: rgb(255 255 255 / 0.82);
+}
+.tip-3d__pie {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgb(162 217 249 / 0.7);
+}
+
+/* ───────────────────────── Revelados al hacer scroll ─────────────────────────
+ * Solo se ocultan si hay JavaScript (scripting: enabled). Sin JS el
+ * contenido es visible desde el primer momento.
+ * Un único IntersectionObserver (components/ui/RevealObserver) añade
+ * [data-shown] una sola vez.
+ */
+@media (scripting: enabled) {
+  [data-reveal]:not([data-shown]) {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  /* Titulares: el recorte va en un hijo para que el IntersectionObserver
+     siga viendo el área del h2 (un elemento recortado al 100 % no "intersecta"). */
+  [data-reveal="clip"]:not([data-shown]) {
+    opacity: 1;
+    transform: none;
+  }
+  [data-reveal="clip"]:not([data-shown]) > .clip-inner {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.35em);
+  }
+}
+[data-reveal] {
+  transition:
+    opacity 450ms var(--ease-out),
+    transform 450ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 50ms);
+}
+.clip-inner {
+  display: block;
+  clip-path: inset(0 0 -0.2em 0); /* deja respirar los descendentes (g, p, y) */
+  transition:
+    clip-path 500ms var(--ease-out),
+    transform 500ms var(--ease-out);
+}
+
+/* Hero: entra al cargar (CSS puro, no espera a JS) */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+/* El titular (elemento LCP) nunca se oculta: visible desde el primer
+   pintado, solo se asienta con un leve desplazamiento y desenfoque. */
+@keyframes settle {
+  from {
+    transform: translateY(0.18em);
+    filter: blur(3px);
+  }
+}
+.hero-in {
+  animation: rise 500ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 120ms);
+}
+.hero-line {
+  display: block;
+  animation: settle 600ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* Circuito del hero: las pistas se dibujan una vez, los nodos laten tenue */
+@keyframes trace {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes node-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+.circuit-trace {
+  stroke-dasharray: var(--len, 600);
+  stroke-dashoffset: var(--len, 600);
+  animation: trace 1400ms var(--ease-in-out) forwards;
+  animation-delay: calc(var(--i, 0) * 90ms + 300ms);
+}
+.circuit-node {
+  /* Dos latidos y se detiene: nada de movimiento perpetuo que repinte el SVG */
+  animation: node-pulse 4s ease-in-out 2 both;
+  animation-delay: calc(var(--i, 0) * 700ms + 1700ms);
+}
+
+/* ───────────────────────── Movimiento reducido ─────────────────────────
+ * Sin desplazamientos ni recortes: solo cambios de opacidad.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal],
+  .clip-inner {
+    transform: none !important;
+    clip-path: none !important;
+    transition: opacity 200ms ease !important;
+    transition-delay: 0ms !important;
+  }
+  [data-reveal="clip"]:not([data-shown]) {
+    opacity: 0;
+  }
+  .hero-in {
+    animation: fade-only 200ms ease both;
+    animation-delay: 0ms;
+  }
+  .hero-line {
+    animation: none;
+  }
+  .circuit-trace {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .circuit-node {
+    animation: none;
+  }
+  .press:active,
+  .card-lift:hover,
+  .card-lift:has(button:active) {
+    transform: none;
+  }
+  .service-dialog[open],
+  .service-dialog[data-closing] {
+    transform: none;
+    @starting-style {
+      transform: none;
+    }
+  }
+  details[open] > .faq-body {
+    animation: fade-only 150ms ease;
+  }
+  .escena-3d__host {
+    filter: none;
+    transition: opacity 200ms ease;
+  }
+}
+@keyframes fade-only {
+  from {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,13 @@
+# No se suben a Vercel: fuentes pesadas y documentación (el sitio no los necesita).
+# Rutas ancladas a la raíz con "/": sin ella, "brand/" excluiría también components/brand/.
+/assets-src/
+/docs/
+/brand/
+/out/
+/.next/
+/.claude/
+*.tsbuildinfo
+# Credenciales locales (token OIDC de Vercel): nunca se suben
+.env
+.env.local
+.env*.local

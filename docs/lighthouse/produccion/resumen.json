@@ -1,0 +1,36 @@
+{
+  "mobile": {
+    "performance": 99,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 100,
+    "LCP": "1.8 s",
+    "CLS": "0",
+    "TBT": "80 ms",
+    "FCP": "1.4 s",
+    "failing": [
+      "max-potential-fid (0.63)",
+      "mainthread-work-breakdown (0)",
+      "unused-javascript (0.5)",
+      "legacy-javascript-insight (0.5)",
+      "network-dependency-tree-insight (0)",
+      "render-blocking-insight (0)"
+    ]
+  },
+  "desktop": {
+    "performance": 100,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 100,
+    "LCP": "0.5 s",
+    "CLS": "0",
+    "TBT": "0 ms",
+    "FCP": "0.4 s",
+    "failing": [
+      "unused-javascript (0.5)",
+      "legacy-javascript-insight (0.5)",
+      "network-dependency-tree-insight (0)",
+      "render-blocking-insight (0.5)"
+    ]
+  }
+}

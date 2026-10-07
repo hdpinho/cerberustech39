@@ -1,0 +1,14 @@
+# Cabeceras de seguridad para Cloudflare Pages.
+# La CSP completa (con hashes) va en un <meta> dentro de cada HTML
+# (scripts/postbuild-csp.mjs). Aquí solo lo que no admite <meta>.
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+  Cross-Origin-Opener-Policy: same-origin
+
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable

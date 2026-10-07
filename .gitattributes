@@ -1,0 +1,9 @@
+# Saltos de línea LF en el repositorio (Vercel compila en Linux)
+* text=auto eol=lf
+
+# Binarios: sin conversión
+*.png binary
+*.avif binary
+*.webp binary
+*.woff2 binary
+*.ico binary
