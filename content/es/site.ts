@@ -38,7 +38,7 @@ export const site: SiteContent = {
     label: "// soluciones tecnológicas integrales",
     title: ["Tecnología que trabaja.", "Y que se defiende."],
     subtitle:
-      "Desarrollamos, aseguramos y automatizamos la tecnología de tu empresa, con estándares internacionales y desde Caracas.",
+      "Desarrollamos, aseguramos y automatizamos la tecnología de tu empresa, con estándares internacionales.",
     primaryCta: "Agenda tu diagnóstico",
     secondaryCta: "Ver servicios",
     globo: {
@@ -276,7 +276,7 @@ export const site: SiteContent = {
       },
       {
         title: "Sin costos ocultos",
-        body: "Pagos por etapas, en USD o en bolívares a la tasa oficial del BCV.",
+        body: "Pagos por etapas con diversas formas de pago nacionales e internacionales.",
         icon: "receipt",
       },
       {
@@ -412,7 +412,7 @@ export const site: SiteContent = {
       },
       {
         q: "¿Cómo cobran?",
-        a: "Por etapas, según lo acordado en la propuesta escrita. Puedes pagar en USD o en bolívares a la tasa oficial del BCV. No hay costos ocultos: lo que firmas es lo que pagas.",
+        a: "Por etapas, según lo acordado en la propuesta escrita. Contamos con diversas formas de pago para clientes nacionales e internacionales. No hay costos ocultos: lo que firmas es lo que pagas.",
       },
       {
         q: "¿De quién es el código?",
