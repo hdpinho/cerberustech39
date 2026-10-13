@@ -1,30 +1,39 @@
-﻿// Genera favicon, apple-touch-icon, icono 512 e imagen Open Graph a partir
-// del logo PROVISIONAL. Cuando llegue el logo oficial, reemplaza los PNG de
-// public/ por los derivados de ./brand/perfil-1080.png y no ejecutes esto.
+// Genera, con el logo OFICIAL (public/brand/*.svg, extraídos del PDF por
+// scripts/extraer-logo.py): favicon, icono para iPhone, icono 512, logo para
+// buscadores (JSON-LD) e imagen Open Graph. No recolorea el logo: usa la versión
+// a color sobre blanco y la versión blanca sobre el navy de la mesa de trabajo
+// del PDF (#001A4C), las dos composiciones oficiales.
 // Uso: node scripts/gen-assets.mjs
-import { writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import puppeteer from "puppeteer-core";
 
 const chrome = process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe";
+const NAVY_OFICIAL = "#001A4C";
+const svg = async (n) => `data:image/svg+xml;base64,${(await readFile(`public/brand/${n}.svg`)).toString("base64")}`;
 const fonts =
-  '<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=JetBrains+Mono:wght@500&family=Inter:wght@400&display=block" rel="stylesheet">';
+  '<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700&family=JetBrains+Mono:wght@500&display=block" rel="stylesheet">';
 
-const monogram = (size, bg = "#071A5F", ink = "#FFFFFF") => `
-<svg width="${size}" height="${size}" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-  <path d="M0 0H30L40 10V40H0Z" fill="${bg}"/>
-  <text x="19" y="27.5" text-anchor="middle" font-family="Chakra Petch" font-weight="700" font-size="17" fill="${ink}">39</text>
-</svg>`;
+const isoBlanco = await svg("isotipo-blanco");
+const vertColor = await svg("logo-vertical-color");
+const horBlanco = await svg("logo-horizontal-blanco");
 
-const iconPage = (size) => `<!doctype html><html><head>${fonts}<style>html,body{margin:0;background:transparent}</style></head><body>${monogram(size)}</body></html>`;
+// Icono cuadrado: isotipo blanco centrado sobre navy, con margen proporcional
+const icono = (size, margen) => `<!doctype html><html><body style="margin:0">
+  <div style="width:${size}px;height:${size}px;background:${NAVY_OFICIAL};display:flex;align-items:center;justify-content:center">
+    <img src="${isoBlanco}" style="width:${Math.round(size * (1 - 2 * margen))}px;height:auto">
+  </div></body></html>`;
 
-const ogPage = `<!doctype html><html><head>${fonts}<style>
+// Logo para buscadores: vertical a color sobre blanco
+const logoBuscadores = `<!doctype html><html><body style="margin:0">
+  <div style="width:512px;height:512px;background:#fff;display:flex;align-items:center;justify-content:center">
+    <img src="${vertColor}" style="width:420px;height:auto">
+  </div></body></html>`;
+
+const og = `<!doctype html><html><head>${fonts}<style>
 html,body{margin:0;width:1200px;height:630px}
-body{background:#040C33;background-image:radial-gradient(120% 90% at 15% 0%,#071A5F 0%,rgba(4,12,51,0) 62%);color:#fff;font-family:Inter;position:relative;overflow:hidden}
-.wrap{position:absolute;left:80px;top:80px;right:80px;bottom:80px;display:flex;flex-direction:column;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:20px}
-.name{font-family:'Chakra Petch';font-weight:700;font-size:40px;letter-spacing:.08em}
-.sub{font-family:'JetBrains Mono';font-size:18px;letter-spacing:.32em;color:#A2D9F9;margin-top:4px}
-h1{font-family:'Chakra Petch';font-weight:700;font-size:76px;line-height:1.02;margin:0;letter-spacing:-.02em}
+body{background:#040C33;background-image:radial-gradient(120% 90% at 15% 0%,#071A5F 0%,rgba(4,12,51,0) 62%);color:#fff;position:relative;overflow:hidden}
+.wrap{position:absolute;left:80px;top:72px;right:80px;bottom:76px;display:flex;flex-direction:column;justify-content:space-between}
+h1{font-family:'Chakra Petch';font-weight:700;font-size:74px;line-height:1.02;margin:0;letter-spacing:-.02em}
 h1 span{color:#A2D9F9;display:block}
 .tag{font-family:'JetBrains Mono';font-size:22px;color:rgba(255,255,255,.75)}
 svg.c{position:absolute;right:0;top:0;opacity:.35}
@@ -35,7 +44,7 @@ svg.c{position:absolute;right:0;top:0;opacity:.35}
 <circle cx="260" cy="130" r="6" fill="#040C33"/><circle cx="200" cy="270" r="6" fill="#040C33"/><circle cx="420" cy="370" r="6" fill="#040C33"/><circle cx="330" cy="490" r="6" fill="#040C33"/>
 </svg>
 <div class="wrap">
-  <div class="brand">${monogram(72, "#A2D9F9", "#040C33")}<div><div class="name">CERBERUS</div><div class="sub">TECH 39</div></div></div>
+  <img src="${horBlanco}" style="height:104px;width:auto;align-self:flex-start">
   <h1>Tecnología que trabaja.<span>Y que se defiende.</span></h1>
   <div class="tag">// construimos · protegemos · automatizamos — Caracas, Venezuela</div>
 </div></body></html>`;
@@ -43,24 +52,19 @@ svg.c{position:absolute;right:0;top:0;opacity:.35}
 const browser = await puppeteer.launch({ executablePath: chrome });
 try {
   const page = await browser.newPage();
-  for (const [size, file] of [
-    [32, "public/favicon-32.png"],
-    [180, "public/apple-touch-icon.png"],
-    [512, "public/icon-512.png"],
-  ]) {
-    await page.setViewport({ width: size, height: size });
-    await page.setContent(iconPage(size), { waitUntil: "load" });
+  const foto = async (html, w, h, ruta) => {
+    await page.setViewport({ width: w, height: h });
+    await page.setContent(html, { waitUntil: "load" });
     await page.evaluate(() => document.fonts.ready);
-    await page.screenshot({ path: file, omitBackground: true, clip: { x: 0, y: 0, width: size, height: size } });
-    console.log("ok", file);
-  }
-  await page.setViewport({ width: 1200, height: 630 });
-  await page.setContent(ogPage, { waitUntil: "load" });
-  await page.evaluate(() => document.fonts.ready);
-  await page.screenshot({ path: "public/og.png" });
-  console.log("ok public/og.png");
-  await writeFile("public/icon.svg", monogram(40).trim() .replace('font-family="Chakra Petch"', 'font-family="Chakra Petch, Arial, sans-serif"'));
-  console.log("ok public/icon.svg");
+    await page.screenshot({ path: ruta, clip: { x: 0, y: 0, width: w, height: h } });
+    console.log("ok", ruta);
+  };
+  await foto(icono(32, 0.06), 32, 32, "public/favicon-32.png");
+  await foto(icono(48, 0.07), 48, 48, "public/favicon-48.png");
+  await foto(icono(180, 0.12), 180, 180, "public/apple-touch-icon.png");
+  await foto(icono(512, 0.12), 512, 512, "public/icon-512.png");
+  await foto(logoBuscadores, 512, 512, "public/brand/logo-512.png");
+  await foto(og, 1200, 630, "public/og.png");
 } finally {
   await browser.close();
 }

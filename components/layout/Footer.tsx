@@ -20,7 +20,7 @@ export function Footer({ c, homePrefix = "" }: { c: SiteContent; homePrefix?: st
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
             <a href={`${homePrefix}#inicio`} className="inline-block">
-              <Logo variant="light" />
+              <Logo variante="blanco" className="h-12 w-auto" />
               <span className="sr-only">, ir al inicio</span>
             </a>
             <p className="mt-5 max-w-[22rem] text-white/70">{c.company.tagline}</p>

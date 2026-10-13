@@ -70,20 +70,3 @@ export function CircuitField({ className = "", animated = true }: { className?: 
     </svg>
   );
 }
-
-/** Marca de agua grande y casi transparente (sustituye al isotipo mientras no haya logo oficial). */
-export function Watermark({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 400 400" className={className} aria-hidden="true" focusable="false">
-      <g fill="none" stroke="currentColor" strokeWidth="1.5">
-        <path d="M40 40H300L360 100V360H40Z" />
-        <path d="M80 80H284L320 116V320H80Z" opacity="0.6" />
-        <path d="M120 200H200L230 170H320M200 200V280L230 310H320M120 140H170L200 110V40" opacity="0.8" />
-        <circle cx="120" cy="200" r="6" />
-        <circle cx="120" cy="140" r="6" />
-        <circle cx="320" cy="170" r="6" />
-        <circle cx="320" cy="310" r="6" />
-      </g>
-    </svg>
-  );
-}

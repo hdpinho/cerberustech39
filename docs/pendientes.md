@@ -14,7 +14,6 @@
 
 ## Otros pendientes
 
-- **Logo oficial.** Se usa un wordmark provisional. Cuando lo autorices, sigue «Cambiar al logo oficial» en el README.
 - **Brochure (`brand/brochure.pdf`).** No estaba en `./brand/`. Conviene contrastar textos y diagramación cuando esté disponible.
 - **Respuesta de la FAQ «¿Cuánto tarda una web?».** Usa un tono comercial («en cuestión de días» / «en pocas semanas»). Confirma que el equipo puede cumplir esos plazos.
 - **Política de privacidad.** Es básica. Si se trabaja con datos del sector financiero o de clientes en la UE, conviene una revisión legal (RGPD / normativa venezolana).

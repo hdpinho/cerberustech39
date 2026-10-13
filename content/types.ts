@@ -118,7 +118,7 @@ export interface SiteContent {
       ayuda: string;
     };
   };
-  guardians: { label: string; title: string; intro: string; pillars: Pillar[] };
+  guardians: { label: string; title: string; intro: string; isotipoAlt: string; pillars: Pillar[] };
   services: {
     label: string;
     title: string;

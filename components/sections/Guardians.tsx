@@ -1,33 +1,8 @@
+import { Isotipo } from "@/components/brand/Logo";
 import { Icon } from "@/components/ui/Icon";
 import { Imagen } from "@/components/ui/Imagen";
 import { Container, Section, SectionHeader } from "@/components/ui/primitives";
 import type { SiteContent } from "@/content/types";
-
-/** Diagrama: un centro que vigila en tres direcciones (sin imitar el isotipo). */
-function GuardianDiagram() {
-  return (
-    <svg viewBox="0 0 320 260" className="h-auto w-full max-w-[22rem]" aria-hidden="true" focusable="false">
-      <g fill="none" stroke="var(--color-tech)" strokeWidth="1.25">
-        <path d="M160 130V40" pathLength={1} className="circuit-trace" style={{ "--i": 0 } as React.CSSProperties} />
-        <path d="M160 130L70 205" pathLength={1} className="circuit-trace" style={{ "--i": 1 } as React.CSSProperties} />
-        <path d="M160 130L250 205" pathLength={1} className="circuit-trace" style={{ "--i": 2 } as React.CSSProperties} />
-        <circle cx="160" cy="130" r="74" strokeDasharray="2 6" opacity="0.5" />
-      </g>
-      <path d="M134 104H178L186 112V156H134Z" fill="var(--color-navy)" />
-      <path d="M150 130h20M160 120v20" stroke="var(--color-cyan)" strokeWidth="2" />
-      {[
-        [160, 40],
-        [70, 205],
-        [250, 205],
-      ].map(([x, y]) => (
-        <g key={`${x}-${y}`}>
-          <circle cx={x} cy={y} r="16" fill="#fff" stroke="var(--color-navy)" strokeWidth="1.5" />
-          <circle cx={x} cy={y} r="5" fill="var(--color-tech)" />
-        </g>
-      ))}
-    </svg>
-  );
-}
 
 export function Guardians({ data }: { data: SiteContent["guardians"] }) {
   return (
@@ -38,7 +13,8 @@ export function Guardians({ data }: { data: SiteContent["guardians"] }) {
             <SectionHeader id="guardianes-title" label={data.label} title={data.title} intro={data.intro} />
           </div>
           <div className="flex justify-center lg:col-span-5 lg:justify-end" data-reveal style={{ "--i": 2 } as React.CSSProperties}>
-            <GuardianDiagram />
+            {/* El isotipo oficial: el guardián de tres cabezas que da nombre a la sección */}
+            <Isotipo variante="color" alt={data.isotipoAlt} className="h-auto w-full max-w-[20rem] lg:max-w-[22rem]" />
           </div>
         </div>
 

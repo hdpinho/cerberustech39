@@ -30,11 +30,11 @@ export const metadata: Metadata = {
   description: c.meta.description,
   applicationName: c.company.shortName,
   alternates: { canonical: "/" },
-  // Logo PROVISIONAL (scripts/gen-assets.mjs). Sustituir por el oficial.
+  // Isotipo oficial (scripts/gen-assets.mjs a partir de public/brand/)
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
       { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },

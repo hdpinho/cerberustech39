@@ -3,9 +3,7 @@
 Landing one-page de **Cerberus Tech 39, C.A.** (Caracas, Venezuela).
 Next.js (App Router) + TypeScript estricto + Tailwind CSS v4, exportado como **sitio 100 % estático**.
 
-> **Logo provisional.** Por decisión del cliente aún no se usa el logo oficial.
-> El wordmark «CERBERUS / TECH 39» y el monograma «39» son marcadores neutros
-> (ver [Cambiar al logo oficial](#cambiar-al-logo-oficial)).
+> **Logo oficial** en SVG, extraído del PDF vectorial de marca (ver [Logo oficial](#logo-oficial)).
 
 ---
 
@@ -113,12 +111,30 @@ El contenido pasa por `getContent(locale)` en `content/index.ts`. Para publicar 
 2. Regístralo en `content/index.ts` y crea la ruta `app/en/page.tsx`, que llame a `getContent("en")`.
 3. Añade `alternates.languages` en los metadatos y la URL en `app/sitemap.ts`.
 
-### Cambiar al logo oficial
+### Logo oficial
 
-1. Coloca los archivos en `./brand/`, preferiblemente en SVG.
-2. Reemplaza el contenido de `components/brand/Logo.tsx` (`Logo` y `Monogram`) por el logo oficial (`<img>` o SVG en línea). No lo redibujes ni lo recolorees.
-3. Reemplaza `public/icon.svg`, `public/favicon-32.png`, `public/apple-touch-icon.png`, `public/icon-512.png` y `public/og.png` por versiones derivadas de `brand/perfil-1080.png`. A partir de ahí no ejecutes `scripts/gen-assets.mjs`, que genera los provisionales.
-4. Opcional: cambia la `Watermark` de `components/brand/Circuit.tsx` por `isotipo-blanco-circuitos`.
+Las fuentes están en `brand/`: el PDF vectorial (`ceerberus.pdf`), el original de Illustrator (`ceerberus.ai`) y los PNG `ceerberus-01` a `05`.
+
+- **Cómo se obtienen los SVG.** Se extraen del PDF con `python scripts/extraer-logo.py` (requiere PyMuPDF) y se optimizan con SVGO. La extracción es directa, sin redibujar ni recolorear. En las versiones blancas, el fondo navy de la mesa de trabajo pasa a ser transparente, como en los PNG oficiales.
+
+  ```bash
+  python scripts/extraer-logo.py
+  npx svgo --multipass -p 2 -f public/brand -o public/brand
+  node scripts/gen-assets.mjs     # favicon, iPhone, icono 512, logo JSON-LD e imagen Open Graph
+  ```
+
+- **Dónde se usa cada archivo de `public/brand/`:**
+
+  | Archivo | Uso |
+  |---|---|
+  | `logo-horizontal-color.svg` | Barra sobre secciones claras, página de privacidad |
+  | `logo-horizontal-blanco.svg` | Barra sobre secciones oscuras, pie de página |
+  | `isotipo-color.svg` | Sección «Tres guardianes» |
+  | `isotipo-blanco.svg` | Marca de agua del hero y de Contacto (máscara CSS), favicon e iconos |
+  | `logo-vertical-color.svg` | Logo para buscadores (`logo-512.png`) |
+  | `logo-vertical-blanco.svg`, `logo-apilado-color.svg` | Disponibles para otras piezas |
+
+- **Componentes:** `components/brand/Logo.tsx` (`Logo`, `Isotipo`, `MarcaDeAgua`).
 
 ---
 
@@ -132,7 +148,7 @@ app/
   sitemap.ts, robots.ts
   globals.css          tokens de marca, bisel, revelados, movimiento reducido
 components/
-  brand/               Logo (provisional), circuito SVG y marca de agua
+  brand/               Logo oficial (horizontal, isotipo, marca de agua) y circuito SVG
   layout/              Navbar, Footer, Analytics, CookieNotice
   sections/            Hero, Guardians, Services (+diálogo), Packages, Process, Trust,
                        Sectors, Purpose, Faq, Contact (+ContactForm diferido)

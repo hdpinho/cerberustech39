@@ -1,5 +1,5 @@
 import { Mail, MapPin } from "lucide-react";
-import { Watermark } from "@/components/brand/Circuit";
+import { MarcaDeAgua } from "@/components/brand/Logo";
 import { WhatsappIcon } from "@/components/ui/Icon";
 import { Imagen } from "@/components/ui/Imagen";
 import { ButtonLink, Container, Section, SectionHeader } from "@/components/ui/primitives";
@@ -15,7 +15,7 @@ export function Contact({ data, services }: { data: SiteContent["contact"]; serv
 
   return (
     <Section id="contacto" tone="dark" labelledBy="contacto-title">
-      <Watermark className="pointer-events-none absolute -bottom-24 -left-24 h-[34rem] w-[34rem] text-cyan/[0.045]" />
+      <MarcaDeAgua className="absolute -bottom-20 -left-24 w-[34rem]" />
       <div className="fondo-reticula" aria-hidden="true" />
       <Container className="relative">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">

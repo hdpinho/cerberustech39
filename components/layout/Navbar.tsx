@@ -97,8 +97,10 @@ export function Navbar({ nav }: { nav: SiteContent["nav"] }) {
       }`}
     >
       <nav aria-label="Principal" className="mx-auto flex h-full max-w-[1200px] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-        <a href="#inicio" className="-m-1 p-1">
-          <Logo variant={dark ? "light" : "dark"} />
+        <a href="#inicio" className="-m-1 flex shrink-0 items-center p-1">
+          {/* Las dos versiones se cargan desde el inicio: al cambiar de sección no hay espera */}
+          <Logo variante="blanco" oculto={!dark} className="h-9 w-auto sm:h-10" />
+          <Logo variante="color" oculto={dark} className="h-9 w-auto sm:h-10" />
           <span className="sr-only">, ir al inicio</span>
         </a>
 

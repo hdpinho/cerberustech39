@@ -20,7 +20,7 @@ export default function PrivacyPage() {
       <header data-tone="light" className="border-b border-line bg-white">
         <Container className="flex h-[var(--header-h)] items-center justify-between">
           <a href="/">
-            <Logo />
+            <Logo variante="color" className="h-9 w-auto sm:h-10" />
             <span className="sr-only">, ir al inicio</span>
           </a>
           <a href="/" className="inline-flex items-center gap-1.5 text-sm font-medium text-navy hover:underline">

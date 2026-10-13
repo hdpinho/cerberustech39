@@ -290,6 +290,16 @@ details[open] > .faq-body {
   --c: rgb(26 122 179 / 0.9);
 }
 
+/* Marca de agua: el isotipo oficial (blanco) como máscara, a muy baja opacidad */
+.marca-agua {
+  aspect-ratio: 387 / 344;
+  background: #fff;
+  opacity: 0.045;
+  -webkit-mask: url("/brand/isotipo-blanco.svg") center / contain no-repeat;
+  mask: url("/brand/isotipo-blanco.svg") center / contain no-repeat;
+  pointer-events: none;
+}
+
 /* Recorte biselado para imágenes (misma esquina que las tarjetas) */
 .recorte-bisel {
   --bevel: 18px;

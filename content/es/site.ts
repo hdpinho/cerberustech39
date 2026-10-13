@@ -62,6 +62,8 @@ export const site: SiteContent = {
     title: "Un guardián que vigila en todas las direcciones.",
     intro:
       "En la mitología, Cerbero es el guardián de tres cabezas que nada deja pasar. Nosotros tomamos esa idea al pie de la letra: cada cabeza cuida un frente de tu tecnología, y las tres trabajan juntas.",
+    isotipoAlt:
+      "Isotipo de Cerberus Tech 39: un guardián de tres cabezas sobre un escudo con candado y trazos de circuito.",
     pillars: [
       {
         id: "construimos",

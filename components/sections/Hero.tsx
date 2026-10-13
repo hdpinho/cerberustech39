@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
-import { CircuitField, Watermark } from "@/components/brand/Circuit";
+import { CircuitField } from "@/components/brand/Circuit";
+import { MarcaDeAgua } from "@/components/brand/Logo";
 import { Escena3D } from "@/components/three/Escena3D";
 import { Icon } from "@/components/ui/Icon";
 import { ButtonLink, Container, MonoLabel } from "@/components/ui/primitives";
@@ -34,7 +35,7 @@ export function Hero({ hero, pillars }: { hero: SiteContent["hero"]; pillars: Si
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="fondo-reticula" />
         <CircuitField className="absolute inset-y-0 left-0 h-full w-full -scale-x-100 opacity-35 lg:w-[55%]" />
-        <Watermark className="absolute top-1/2 left-[-18%] h-[110%] max-h-[52rem] w-auto -translate-y-1/2 text-cyan/[0.04]" />
+        <MarcaDeAgua className="absolute top-1/2 left-[-14%] h-[96%] max-h-[48rem] -translate-y-1/2" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-deep to-transparent" />
       </div>
 

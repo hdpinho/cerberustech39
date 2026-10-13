@@ -15,7 +15,7 @@ export function buildJsonLd(c: SiteContent) {
         name: c.company.name,
         alternateName: c.company.shortName,
         url: `${siteUrl}/`,
-        logo: `${siteUrl}/icon-512.png`,
+        logo: `${siteUrl}/brand/logo-512.png`,
         slogan: c.company.tagline,
         founder: { "@type": "Person", name: c.trust.leader.name, jobTitle: "CEO" },
         ...(contact.correo ? { email: contact.correo } : {}),

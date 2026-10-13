@@ -1,57 +1,71 @@
 /**
- * LOGO PROVISIONAL.
- * Por decisión del cliente aún no se usa el logo oficial. Este wordmark y
- * el monograma «39» son marcadores neutros: NO imitan el isotipo del perro
- * de tres cabezas. Cuando llegue el logo oficial, reemplaza solo este
- * archivo (y `Monogram`) por los SVG/PNG de ./brand/.
+ * Logo oficial de Cerberus Tech 39, C.A.
+ *
+ * Los SVG de public/brand/ salen del PDF vectorial oficial (brand/ceerberus.pdf)
+ * con scripts/extraer-logo.py: conversión directa de los trazos, sin redibujar
+ * ni recolorear. Las dimensiones (en puntos del PDF) evitan saltos de diseño.
  */
-type Variant = "dark" | "light";
 
-export function Monogram({ className = "", title }: { className?: string; title?: string }) {
+const HORIZONTAL = {
+  // sobre fondos claros
+  color: { src: "/brand/logo-horizontal-color.svg", ancho: 548, alto: 130 },
+  // sobre fondos oscuros
+  blanco: { src: "/brand/logo-horizontal-blanco.svg", ancho: 551, alto: 130 },
+} as const;
+
+const ISOTIPO = {
+  color: { src: "/brand/isotipo-color.svg", ancho: 387, alto: 344 },
+  blanco: { src: "/brand/isotipo-blanco.svg", ancho: 387, alto: 344 },
+} as const;
+
+export const NOMBRE_LEGAL = "Cerberus Tech 39, C.A.";
+
+type Variante = keyof typeof HORIZONTAL;
+
+/** Logo horizontal. `variante="blanco"` se usa sobre fondos oscuros. */
+export function Logo({
+  variante = "color",
+  className = "h-10 w-auto",
+  oculto = false,
+}: {
+  variante?: Variante;
+  className?: string;
+  /** Se renderiza pero no se muestra (para alternar sin esperar a la descarga). */
+  oculto?: boolean;
+}) {
+  const l = HORIZONTAL[variante];
   return (
-    <svg
-      viewBox="0 0 40 40"
+    <img
+      src={l.src}
+      width={l.ancho}
+      height={l.alto}
+      alt={NOMBRE_LEGAL}
+      decoding="async"
+      hidden={oculto}
       className={className}
-      role={title ? "img" : undefined}
-      aria-hidden={title ? undefined : true}
-      aria-label={title}
-    >
-      <path d="M0 0H30L40 10V40H0Z" fill="currentColor" />
-      <text
-        x="19"
-        y="27.5"
-        textAnchor="middle"
-        fontFamily="var(--font-chakra), sans-serif"
-        fontWeight="700"
-        fontSize="17"
-        fill="var(--mono-ink, #fff)"
-      >
-        39
-      </text>
-    </svg>
+    />
   );
 }
 
-/** `variant="light"` se usa sobre fondos oscuros. */
-export function Logo({ variant = "dark", className = "" }: { variant?: Variant; className?: string }) {
-  const onDark = variant === "light";
-  return (
-    <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <Monogram
-        className={`h-8 w-8 shrink-0 ${onDark ? "text-cyan [--mono-ink:#040C33]" : "text-navy [--mono-ink:#fff]"}`}
-      />
-      <span className="flex flex-col leading-none">
-        <span
-          className={`font-display text-[1.05rem] font-bold tracking-[0.08em] ${onDark ? "text-white" : "text-navy"}`}
-        >
-          CERBERUS
-        </span>
-        <span
-          className={`mt-1 font-mono text-[0.625rem] tracking-[0.32em] ${onDark ? "text-cyan" : "text-tech"}`}
-        >
-          TECH 39
-        </span>
-      </span>
-    </span>
-  );
+/** Isotipo (escudo con las tres cabezas) como imagen de contenido. */
+export function Isotipo({
+  variante = "color",
+  alt,
+  className = "",
+}: {
+  variante?: Variante;
+  alt: string;
+  className?: string;
+}) {
+  const i = ISOTIPO[variante];
+  return <img src={i.src} width={i.ancho} height={i.alto} alt={alt} loading="lazy" decoding="async" className={className} />;
+}
+
+/**
+ * Isotipo como marca de agua decorativa: silueta blanca casi transparente.
+ * Se pinta con una máscara CSS (no es <img>), así nunca compite como elemento
+ * LCP con el titular ni aparece en el árbol de accesibilidad.
+ */
+export function MarcaDeAgua({ className = "" }: { className?: string }) {
+  return <div aria-hidden="true" className={`marca-agua ${className}`} />;
 }
